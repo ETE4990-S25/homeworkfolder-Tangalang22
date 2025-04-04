@@ -49,7 +49,7 @@ def find_fact(queue, optimusprime):
             queue.put("Factorial hit safety limit")
             return
         factbase += 1
-    queue.put(f"Factorial is: {factresult}")
+    queue.put(f"Factorial is: {factorial(factbase-1)}. Factorial base is: {factbase-1}")
     print("Factorial process finished", flush=True)
 
 #optimusprime = find_prime(1) These are all tests to make sure the math side works.
@@ -62,7 +62,7 @@ def find_fact(queue, optimusprime):
 
 if __name__ == '__main__':
     start = time.perf_counter()
-    optimusprime = find_prime(1)
+    optimusprime = find_prime(3)
     print("Prime is:", optimusprime) #i named the final prime variable optimus prime because it was easy to remember
     manager = multiprocessing.Manager()
     queue = manager.Queue()
@@ -80,8 +80,18 @@ if __name__ == '__main__':
     
 
     for _ in range(2):
-        result = queue.get(timeout=5)  # Another time limit to prevent program from timing out
+        result = queue.get(timeout=5)  # Another time limit to prevent program from timing out, idky it worked in a py file but not in jupyter
         print(result)
     
     processtime = time.perf_counter()
     print("Finished job in: ", processtime/100000, "seconds")
+
+#Terminal output 
+# Prime is: 24391781
+#Starting processes...
+#Fibonacci process finished
+#Factorial process finished
+#Processes finished. Reading results from the queue:
+#Fibonacci is: 24157817
+#Factorial is: 3628800. Factorial base is: 10
+#Finished job in:  0.722555061084 seconds
