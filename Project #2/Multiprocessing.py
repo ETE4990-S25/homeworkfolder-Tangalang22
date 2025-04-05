@@ -27,6 +27,7 @@ def find_fib(queue, optimusprime, starttime):
     b = 1
     c = 0
     fib = 0
+    count = 1
     while fib < optimusprime:
         fib = a + b
         c = a #c is for the final result because fib would return one iteration above what i wanted
@@ -35,8 +36,9 @@ def find_fib(queue, optimusprime, starttime):
         if b > 1e8:  # Was running into issues of the program running for forever, asked chatgpt and they said to put limits
             queue.put("Fibonacci hit safety limit")
             return
+        count += 1
     fib_time = time.time() - starttime
-    queue.put(f"Fibonacci is: {fib - c}. It took {fib_time} seconds to find this number.")
+    queue.put(f"Fibonacci is: {fib - c}. Fibonacci base: {count}. It took {fib_time} seconds to find this number.")
     print("Fibonacci process finished", flush=True)
 
 def find_fact(queue, optimusprime, starttime):

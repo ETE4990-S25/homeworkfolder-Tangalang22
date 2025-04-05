@@ -13,7 +13,7 @@ def is_prime(n):
 
 
 def find_prime(time):
-    end_time = datetime.now() + timedelta(seconds = time)
+    end_time = datetime.now() + timedelta(minutes = time)
     x = 0 #start of prime iterator
     while datetime.now() < end_time:
         prime_check = is_prime(x)
@@ -63,7 +63,6 @@ async def main():
         find_fib(optimusprime, starttime),
         find_fact(optimusprime, starttime)
     )
-    print(output)
     print("Processes finished.")
 
 asyncio.run(main())
