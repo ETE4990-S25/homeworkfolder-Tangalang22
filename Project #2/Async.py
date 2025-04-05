@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-import threading
+import asyncio
 from math import factorial
 import time
 
@@ -13,7 +13,7 @@ def is_prime(n):
 
 
 def find_prime(time):
-    end_time = datetime.now() + timedelta(minutes = time)
+    end_time = datetime.now() + timedelta(seconds = time)
     x = 0 #start of prime iterator
     while datetime.now() < end_time:
         prime_check = is_prime(x)
@@ -22,7 +22,7 @@ def find_prime(time):
         x += 1
     return prime
 
-def find_fib():
+async def find_fib(optimusprime, starttime):
     a = 0
     b = 1
     c = 0
@@ -39,7 +39,7 @@ def find_fib():
     print(f"Fibonacci is: {fib - c}. It took {fib_time} seconds to find this number.")
     print("Fibonacci process finished", flush=True)
 
-def find_fact():
+async def find_fact(optimusprime, starttime):
     factbase = 0
     factresult = 0
     while factresult < optimusprime:
@@ -54,25 +54,16 @@ def find_fact():
     print(f"Factorial is: {factorial(factbase-1)}. Factorial base is: {factbase-1}. It took {fact_time} seconds to find this number.")
     print("Factorial process finished", flush=True)
 
-if __name__ == '__main__':
+async def main():
     optimusprime = find_prime(3)
     print("Prime is:", optimusprime) #i named the final prime variable optimus prime because it was easy to remember
     starttime = time.time()
     print("Starting processes...")
-    thread1 = threading.Thread(target = find_fib)
-    thread2 = threading.Thread(target = find_fact)
-    thread1.start()
-    thread2.start()
-    thread1.join()
-    thread2.join()
+    output = await asyncio.gather(
+        find_fib(optimusprime, starttime),
+        find_fact(optimusprime, starttime)
+    )
+    print(output)
     print("Processes finished.")
-    
 
-#Terminal Output
-#Prime is: 25370561
-#Starting processes...
-#Fibonacci is: 24157817. It took 0.0006403923034667969 seconds to find this number.
-#Fibonacci process finished
-#Factorial is: 3628800. Factorial base is: 10. It took 0.0008156299591064453 seconds to find this number.
-#Factorial process finished
-#Processes finished.
+asyncio.run(main())
