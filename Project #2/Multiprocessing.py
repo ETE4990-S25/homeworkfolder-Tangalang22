@@ -13,7 +13,7 @@ def is_prime(n):
 
 
 def find_prime(time):
-    end_time = datetime.now() + timedelta(minutes = time)
+    end_time = datetime.now() + timedelta(seconds = time)
     x = 0 #start of prime iterator
     while datetime.now() < end_time:
         prime_check = is_prime(x)
@@ -22,7 +22,7 @@ def find_prime(time):
         x += 1
     return prime
 
-def find_fib(queue, optimusprime):
+def find_fib(queue, optimusprime, starttime):
     a = 0
     b = 1
     c = 0
@@ -35,10 +35,11 @@ def find_fib(queue, optimusprime):
         if b > 1e8:  # Was running into issues of the program running for forever, asked chatgpt and they said to put limits
             queue.put("Fibonacci hit safety limit")
             return
-    queue.put(f"Fibonacci is: {fib - c}")
+    fib_time = time.time() - starttime
+    queue.put(f"Fibonacci is: {fib - c}. It took {fib_time} seconds to find this number.")
     print("Fibonacci process finished", flush=True)
 
-def find_fact(queue, optimusprime):
+def find_fact(queue, optimusprime, starttime):
     factbase = 0
     factresult = 0
     while factresult < optimusprime:
@@ -49,7 +50,8 @@ def find_fact(queue, optimusprime):
             queue.put("Factorial hit safety limit")
             return
         factbase += 1
-    queue.put(f"Factorial is: {factorial(factbase-1)}. Factorial base is: {factbase-1}")
+    fact_time = time.time() - starttime
+    queue.put(f"Factorial is: {factorial(factbase-1)}. Factorial base is: {factbase-1}. It took {fact_time} seconds to find this number.")
     print("Factorial process finished", flush=True)
 
 #optimusprime = find_prime(1) These are all tests to make sure the math side works.
@@ -61,14 +63,14 @@ def find_fact(queue, optimusprime):
 
 
 if __name__ == '__main__':
-    start = time.perf_counter()
     optimusprime = find_prime(3)
     print("Prime is:", optimusprime) #i named the final prime variable optimus prime because it was easy to remember
+    starttime = time.time()
     manager = multiprocessing.Manager()
     queue = manager.Queue()
     
-    p1 = multiprocessing.Process(target = find_fib, args = (queue, optimusprime))
-    p2 = multiprocessing.Process(target = find_fact, args = (queue, optimusprime))
+    p1 = multiprocessing.Process(target = find_fib, args = (queue, optimusprime, starttime))
+    p2 = multiprocessing.Process(target = find_fact, args = (queue, optimusprime, starttime))
     
     print("Starting processes...")
     p1.start()
@@ -83,15 +85,11 @@ if __name__ == '__main__':
         result = queue.get(timeout=5)  # Another time limit to prevent program from timing out, idky it worked in a py file but not in jupyter
         print(result)
     
-    processtime = time.perf_counter()
-    print("Finished job in: ", processtime/100000, "seconds")
 
-#Terminal output 
-# Prime is: 24391781
+#Prime is: 1380233
 #Starting processes...
 #Fibonacci process finished
 #Factorial process finished
 #Processes finished. Reading results from the queue:
-#Fibonacci is: 24157817
-#Factorial is: 3628800. Factorial base is: 10
-#Finished job in:  0.722555061084 seconds
+#Fibonacci is: 1346269. It took 0.130295991897583 seconds to find this number.
+#Factorial is: 362880. Factorial base is: 9. It took 0.13071012496948242 to find this number.

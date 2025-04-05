@@ -13,7 +13,7 @@ def is_prime(n):
 
 
 def find_prime(time):
-    end_time = datetime.now() + timedelta(minutes = time)
+    end_time = datetime.now() + timedelta(seconds = time)
     x = 0 #start of prime iterator
     while datetime.now() < end_time:
         prime_check = is_prime(x)
@@ -35,7 +35,8 @@ def find_fib():
         if b > 1e8:  # Was running into issues of the program running for forever, asked chatgpt and they said to put limits
             print("Fibonacci hit safety limit")
             return
-    print(f"Fibonacci is: {fib - c}")
+    fib_time = time.time() - starttime
+    print(f"Fibonacci is: {fib - c}. It took {fib_time} seconds to find this number.")
     print("Fibonacci process finished", flush=True)
 
 def find_fact():
@@ -49,14 +50,14 @@ def find_fact():
             print("Factorial hit safety limit")
             return
         factbase += 1
-    print(f"Factorial is: {factorial(factbase-1)}. Factorial base is: {factbase-1}")
+    fact_time = time.time() - starttime
+    print(f"Factorial is: {factorial(factbase-1)}. Factorial base is: {factbase-1}. It took {fact_time} seconds to find this number.")
     print("Factorial process finished", flush=True)
 
 if __name__ == '__main__':
-    start = time.perf_counter()
     optimusprime = find_prime(3)
     print("Prime is:", optimusprime) #i named the final prime variable optimus prime because it was easy to remember
-    
+    starttime = time.time()
     print("Starting processes...")
     thread1 = threading.Thread(target = find_fib)
     thread2 = threading.Thread(target = find_fact)
@@ -64,17 +65,14 @@ if __name__ == '__main__':
     thread2.start()
     thread1.join()
     thread2.join()
-    print("Processes finished. Reading results from the queue:")
+    print("Processes finished.")
     
-    processtime = time.perf_counter()
-    print("Finished job in: ", processtime/100000, "seconds")
 
 #Terminal Output
-#Prime is: 24876673
+#Prime is: 1385987
 #Starting processes...
-#Fibonacci is: 24157817
+#Fibonacci is: 1346269. It took 0.0005464553833007812 seconds to find this number.
 #Fibonacci process finished
-#Factorial is: 3628800. Factorial base is: 10
+#Factorial is: 362880. Factorial base is: 9. It took 0.0006797313690185547 seconds to find this number.
 #Factorial process finished
 #Processes finished. Reading results from the queue:
-#Finished job in:  0.8675553931969999 seconds
