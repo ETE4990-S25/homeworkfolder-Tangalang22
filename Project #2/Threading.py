@@ -27,16 +27,18 @@ def find_fib():
     b = 1
     c = 0
     fib = 0
+    count = 0
     while fib < optimusprime:
         fib = a + b
-        c = a #c is for the final result because fib would return one iteration above what i wanted
         a = b
         b = fib
+        count = 0
         if b > 1e8:  # Was running into issues of the program running for forever, asked chatgpt and they said to put limits
             print("Fibonacci hit safety limit")
             return
+        count += 1
     fib_time = time.time() - starttime
-    print(f"Fibonacci is: {fib - c}. It took {fib_time} seconds to find this number.")
+    print(f"Fibonacci is: {a}. Fibonacci base: {count - 1}. It took {fib_time} seconds to find this number.")
     print("Fibonacci process finished", flush=True)
 
 def find_fact():

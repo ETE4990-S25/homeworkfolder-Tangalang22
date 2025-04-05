@@ -25,18 +25,18 @@ def find_prime(time):
 async def find_fib(optimusprime, starttime):
     a = 0
     b = 1
-    c = 0
     fib = 0
-    while fib < optimusprime:
+    count = 0
+    while fib <= optimusprime:
         fib = a + b
-        c = a #c is for the final result because fib would return one iteration above what i wanted
         a = b
         b = fib
         if b > 1e8:  # Was running into issues of the program running for forever, asked chatgpt and they said to put limits
             print("Fibonacci hit safety limit")
             return
+        count += 1
     fib_time = time.time() - starttime
-    print(f"Fibonacci is: {fib - c}. It took {fib_time} seconds to find this number.")
+    print(f"Fibonacci is: {a}. Fibonacci base: {count}. It took {fib_time} seconds to find this number.")
     print("Fibonacci process finished", flush=True)
 
 async def find_fact(optimusprime, starttime):
@@ -66,3 +66,14 @@ async def main():
     print("Processes finished.")
 
 asyncio.run(main())
+
+#Terminal Output
+#Prime is: 24862511
+#Starting processes...
+#Fibonacci is: 24157817. Fibonacci base: 37. It took 0.00019693374633789062 seconds to find this number.
+#Fibonacci process finished
+#Factorial is: 3628800. Factorial base is: 10. It took 0.0003056526184082031 seconds to find this number.
+#Factorial process finished
+#Processes finished.
+#
+#For context, my CPU has 12 cores and 24 threads.

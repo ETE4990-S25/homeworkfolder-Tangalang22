@@ -30,7 +30,6 @@ def find_fib(queue, optimusprime, starttime):
     count = 1
     while fib < optimusprime:
         fib = a + b
-        c = a #c is for the final result because fib would return one iteration above what i wanted
         a = b
         b = fib
         if b > 1e8:  # Was running into issues of the program running for forever, asked chatgpt and they said to put limits
@@ -38,7 +37,7 @@ def find_fib(queue, optimusprime, starttime):
             return
         count += 1
     fib_time = time.time() - starttime
-    queue.put(f"Fibonacci is: {fib - c}. Fibonacci base: {count}. It took {fib_time} seconds to find this number.")
+    queue.put(f"Fibonacci is: {a}. Fibonacci base: {count - 1}. It took {fib_time} seconds to find this number.")
     print("Fibonacci process finished", flush=True)
 
 def find_fact(queue, optimusprime, starttime):
@@ -87,11 +86,12 @@ if __name__ == '__main__':
         result = queue.get(timeout=5)  # Another time limit to prevent program from timing out, idky it worked in a py file but not in jupyter
         print(result)
     
-
-#Prime is: 24826541
+#Terminal Output
+#Prime is: 25207139
 #Starting processes...
-#Factorial process finished
 #Fibonacci process finished
+#Factorial process finished
 #Processes finished. Reading results from the queue:
-#Factorial is: 3628800. Factorial base is: 10. It took 0.13333487510681152 seconds to find this number.
-#Fibonacci is: 24157817. It took 0.1338810920715332 seconds to find this number.
+#Fibonacci is: 24157817. Fibonacci base: 37. It took 0.13543081283569336 seconds to find this number.
+#Factorial is: 3628800. Factorial base is: 10. It took 0.13554668426513672 seconds to find this number.
+#PS C:\Users\Admin\Desktop\homeworkfolder-Tangalang22> 
