@@ -13,7 +13,7 @@ def is_prime(n):
 
 
 def find_prime(time):
-    end_time = datetime.now() + timedelta(seconds = time)
+    end_time = datetime.now() + timedelta(minutes = time)
     x = 0 #start of prime iterator
     while datetime.now() < end_time:
         prime_check = is_prime(x)
@@ -68,3 +68,13 @@ if __name__ == '__main__':
     
     processtime = time.perf_counter()
     print("Finished job in: ", processtime/100000, "seconds")
+
+#Terminal Output
+#Prime is: 24876673
+#Starting processes...
+#Fibonacci is: 24157817
+#Fibonacci process finished
+#Factorial is: 3628800. Factorial base is: 10
+#Factorial process finished
+#Processes finished. Reading results from the queue:
+#Finished job in:  0.8675553931969999 seconds
