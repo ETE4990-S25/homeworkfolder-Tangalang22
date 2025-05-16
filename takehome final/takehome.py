@@ -44,9 +44,11 @@ def increment_date(startdate, enddate):
 
 if __name__ == "__main__":
     date = "2011-05-04"
-    today = "2025-05-16"
+    today = "2025-05-"
     base = random.choice(ratesForBase)
-    daylist = increment_date(date, today)
+    pulldata(base, date)
+    #daylist = increment_date(date, today)
+    
 
-    for day in daylist:
-        pulldata(base, day)
+    #for day in daylist:
+    #    pulldata(base, day)
