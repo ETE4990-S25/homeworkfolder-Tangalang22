@@ -3,9 +3,9 @@ import xmltodict
 import json
 import random
 import threading
-import logging
-import csv
-import os
+import time
+import datetime
+from datetime import datetime, timedelta
 
 rates = ["EUR", "GBP", "USD", "DZD", "AUD", "BWP", "BND", "CAD", "CLP", "CNY", "COP", "CZK", "DKK", "HUF", "ISK", "INR", "IDR", "ILS", "KZT", "KRW", "KWD", "LYD", "MYR", "MUR", "NPR", "NZD", "NOK", "OMR", "PKR", "PLN", "QAR", "RUB", "SAR", "SGD", "ZAR", "LKR", "SEK", "CHF", "THB", "TTD"]
 ratesForBase = [r for r in rates if r != "USD" and r != "EUR" and r != "GBP"]
@@ -31,6 +31,22 @@ def pulldata(base, date):
     with open(f"{date}_exchange_rates_{base}.json", "w") as json_file:
         json_file.write(json_data)
 
-date = "2011-05-04"
-base = random.choice(ratesForBase)
-pulldata(base, date)
+def increment_date(startdate, enddate):
+    startobject = datetime.strptime(startdate, "%Y-%m-%d")
+    endobject = datetime.strptime(enddate, "%Y-%m-%d")
+    dates = []
+    currentdate = startobject
+    while currentdate <= endobject:
+        dates.append(currentdate.strftime("%Y-%m-%d"))
+        currentdate += timedelta(days=1)
+    
+    return dates
+
+if __name__ == "__main__":
+    date = "2011-05-04"
+    today = "2025-05-16"
+    base = random.choice(ratesForBase)
+    daylist = increment_date(date, today)
+
+    for day in daylist:
+        pulldata(base, day)
