@@ -3,7 +3,6 @@ import xmltodict
 import json
 import random
 import threading
-import time
 import datetime
 from datetime import datetime, timedelta
 import os
