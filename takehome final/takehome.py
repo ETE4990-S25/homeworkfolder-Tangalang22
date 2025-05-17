@@ -6,11 +6,16 @@ import threading
 import time
 import datetime
 from datetime import datetime, timedelta
+import os
 
 rates = ["EUR", "GBP", "USD", "DZD", "AUD", "BWP", "BND", "CAD", "CLP", "CNY", "COP", "CZK", "DKK", "HUF", "ISK", "INR", "IDR", "ILS", "KZT", "KRW", "KWD", "LYD", "MYR", "MUR", "NPR", "NZD", "NOK", "OMR", "PKR", "PLN", "QAR", "RUB", "SAR", "SGD", "ZAR", "LKR", "SEK", "CHF", "THB", "TTD"]
 ratesForBase = [r for r in rates if r != "USD" and r != "EUR" and r != "GBP"]
 
 def pulldata(base, date):
+    
+    directories = f"currency_data//{base}"
+    os.makedirs(directories, exist_ok=True)
+
     # URL of the XML data
     url = f"https://www.floatrates.com/historical-exchange-rates.html?operation=rates&pb_id=1775&page=historical&currency_date={date}&base_currency_code={base}&format_type=xml"
     print(url)
@@ -28,7 +33,7 @@ def pulldata(base, date):
     print(json_data)
 
     # Optionally, write the JSON data to a file
-    with open(f"{date}_exchange_rates_{base}.json", "w") as json_file:
+    with open(f"{directories}//{date}_exchange_rates_{base}.json", 'w') as json_file:
         json_file.write(json_data)
 
 def increment_date(startdate, enddate):
@@ -44,11 +49,15 @@ def increment_date(startdate, enddate):
 
 if __name__ == "__main__":
     date = "2011-05-04"
-    today = "2025-05-"
     base = random.choice(ratesForBase)
     pulldata(base, date)
     #daylist = increment_date(date, today)
-    
+
+    threads = []
+    for x in increment_date(date, "2025-05-16"):
+        thread = threading.Thread(target=pulldata, args=(base,x,))
+        threads.append(thread)
+        thread.start()
 
     #for day in daylist:
     #    pulldata(base, day)
